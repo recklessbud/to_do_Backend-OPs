@@ -1,8 +1,8 @@
 import express,{json,Request,Response
   ,NextFunction,Router} from "express";
 
-import User from "../Interfaces/IUserInterface";
-import HttpError from "../Customs/CustomError";
+import User from "../Interfaces/IUserInterface.js";
+import HttpError from "../Customs/CustomError.js";
 import { count } from "console";
 import cors from "cors";
 
