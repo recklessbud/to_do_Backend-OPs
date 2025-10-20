@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { Request, Response } from "express";
 import express from "express";
 import request from "supertest";
-import useRouter from "../routes/index.js";
+import useRouter from "../src/routes/index.js";
 
 describe("perform todo", () => {
   const app = express();
