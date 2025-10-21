@@ -34,12 +34,14 @@ jobs:
             
             -   name: install dependencies
                 run: npm ci
+
+            -   name: run tests
+                run: npm run test            
             
             -   name: run lint
                 run: npm run lint
 
-            -   name: run tests
-                run: npm run test
+
                 
             -   name: Create pull request
                 run: |
