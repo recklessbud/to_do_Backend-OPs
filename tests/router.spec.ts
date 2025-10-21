@@ -1,6 +1,5 @@
-import { test, describe, it } from "node:test";
+import { test, describe} from "node:test";
 import assert from "node:assert";
-import { Request, Response } from "express";
 import express from "express";
 import request from "supertest";
 import useRouter from "../src/routes/index.js";
