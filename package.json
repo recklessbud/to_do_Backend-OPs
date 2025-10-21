@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/Server.ts",
-    "test": "node --test --no-warnings=ExperimentalWarning --loader ts-node/esm 'tests/*.{spec,test}.ts'",
+    "test": "node --test --no-warnings=ExperimentalWarning --loader ts-node/esm tests/*.{spec,test}.ts",
     "test:watch": "node --test --watch --no-warnings=ExperimentalWarning --loader ts-node/esm *.{spec,test}.ts",
     "start": "tsx src/Server.ts",
     "lint": "npx eslint . --ext .ts"

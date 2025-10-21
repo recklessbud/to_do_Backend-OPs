@@ -35,20 +35,15 @@ jobs:
             -   name: install dependencies
                 run: npm ci
 
-            -   name: Check if tests folder exists
-                run: |
-                    if [ ! -d "tests" ]; then
-                        echo "tests folder does not exist"
-                    fi
+            -   name: List files in workspace
+                run: ls -R
 
             -   name: run tests
                 run: npm run test            
             
             -   name: run lint
                 run: npm run lint
-
-
-                
+   
             -   name: Create pull request
                 run: |
                     export PR_BRANCH=$(git branch --show-current)
