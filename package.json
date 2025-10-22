@@ -4,6 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/Server.ts",
     "test": "node --test --no-warnings=ExperimentalWarning --loader ts-node/esm tests/router.spec.ts",
     "test:watch": "node --test --watch --no-warnings=ExperimentalWarning --loader ts-node/esm *.{spec,test}.ts",
