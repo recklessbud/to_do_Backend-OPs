@@ -51,7 +51,7 @@ jobs:
               npm install -g pm2
             fi
 
-            REPO_URL="$(git config --get remote.origin.url)"
+            REPO_URL="https://github.com/recklessbud/to_do_Backend-OPs.git"
             echo "Repository URL: $REPO_URL"
             BRANCH="main"
             REPO_DIR="$HOME/to_do_Backend-OPs"
