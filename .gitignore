@@ -2,3 +2,5 @@ node_modules
 .early.coverage
 .env
 .qodo
+.genkit
+example.spec.ts

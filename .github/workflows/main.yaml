@@ -1,0 +1,84 @@
+name: push to aws ec2
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  deploy_to_ec2:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    env:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{secrets.EC2_USER}}
+      EC2_KEY: ${{secrets.EC2_SECRET_KEY}}
+      PORT: ${{secrets.SERVER_PORT}}
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Connect to Ec2 instance
+        run: |
+          echo "$EC2_KEY" | tr -d '\r' > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${EC2_USER}@${EC2_HOST} << 'REMOTE'
+            echo "Current working directory $(pwd)"
+            echo "List home contents:"
+            ls -la
+
+            echo "updating packages"
+            sudo apt update && sudo apt upgrade -y
+            sudo apt install -y curl build-essential
+
+            echo "Installing Node.js..."
+            if ! command -v nvm &> /dev/null; then
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+                export NVM_DIR="$HOME/.nvm"
+                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+                nvm install 20
+            else
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            fi
+
+            echo "Installing PM2..."
+            if ! command -v pm2 &> /dev/null; then
+              npm install -g pm2
+            fi
+
+            REPO_URL="$(git config --get remote.origin.url)"
+            echo "Repository URL: $REPO_URL"
+            BRANCH="main"
+            REPO_DIR="$HOME/to_do_Backend-OPs"
+
+
+            if [ -d "$REPO_DIR/.git" ]; then
+                cd "$REPO_DIR"
+                git fetch origin "$BRANCH"
+                git reset --hard origin/"$BRANCH"
+            else
+                git clone "$REPO_URL" "$REPO_DIR"
+                cd "$REPO_DIR"
+            fi
+
+            echo "Installing dependencies..."
+            npm ci
+
+            echo "creating env for ec2"
+            echo "PORT=${PORT}" > .env
+
+            echo "Building application..."
+            npm run build
+
+            echo "Starting/restarting application..."
+            pm2 start src/Server.js --name "express" || pm2 restart "express"
+            pm2 save
+
+
+          REMOTE
+
+      - name: Remove private_key
+        run: rm -f private_key.pem
