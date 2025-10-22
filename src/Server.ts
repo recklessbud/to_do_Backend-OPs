@@ -1,15 +1,17 @@
 import express from "express";
-import useRouter from "./routes/index";
-import errorHandler from "./Middlewares/ErrorHandler";
-import path from "path";
+import useRouter from "./routes/index.js";
+import errorHandler from "./Middlewares/ErrorHandler.js";
 import cors from "cors";
 import { config } from "dotenv";
 
 const app = express();
 config() 
-const logger = require("morgan");
+import logger from "morgan";
 const port = process.env.PORT;
-const startUp = require("debug")("startup"); 
+
+const startUp = (message: string) => {
+  console.log(message);
+};
 
 startUp("Application is starting...");
  
@@ -33,7 +35,7 @@ if (app.get("env") === "development") {
   app.use(logger("dev"));
 }
 
-useRouter.use(express.static(path.join(__dirname, "public")));
+// useRouter.use(express.static(path.join(__dirname, "public")));
 useRouter.use(express.urlencoded({ extended: true }));
 useRouter.use(errorHandler);
 

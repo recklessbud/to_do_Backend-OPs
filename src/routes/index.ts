@@ -1,10 +1,6 @@
-import express,{json,Request,Response
-  ,NextFunction,Router} from "express";
-
-import User from "../Interfaces/IUserInterface";
-import HttpError from "../Customs/CustomError";
-import { count } from "console";
-import cors from "cors";
+import{json,Request,Response
+  ,Router} from "express";
+import HttpError from "../Customs/CustomError.js";
 
 const useRouter = Router()
 useRouter.use(json());
@@ -19,9 +15,9 @@ interface properties{
     isDone:boolean;  
 }
 
-let data:Array<properties> = [];
+let data:properties[] = [];
 
-useRouter.post("/add",(req:Request<{},{},properties>,res:Response)=>{
+useRouter.post("/add",(req:Request<object,object,properties>,res:Response)=>{
     const { title,countdown } = req.body;
     data.push(req.body);
     console.log(data);
@@ -91,6 +87,7 @@ useRouter.get("/getAll", (req: Request, res: Response) => {
   res.status(200).json(data.filter(item => !item.isDone));
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 useRouter.get('/error', (req, res) => {
   throw new HttpError('This is a custom error', 400);
 });
