@@ -61,9 +61,6 @@ jobs:
             chmod 600 ~/.ssh/id_ed25519
             ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-            echo "Testing GitHub connection..."
-            ssh -T git@github.com
-
             REPO_URL="git@github.com:recklessbud/to_do_Backend-OPs.git"
             echo "Repository URL: $REPO_URL"
             BRANCH="main"
