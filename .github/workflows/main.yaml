@@ -58,8 +58,8 @@ jobs:
 
             rm -rf ~/.ssh
             mkdir -p ~/.ssh
-            echo "${AUTH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
-            echo "${AUTH_PUBLIC_KEY}" > ~/.ssh/id_ed25519.pub
+            printf "%s\n" "${{secrets.AUTH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
+            printf "%s\n" "${{secrets.AUTH_PUBLIC_KEY}}" > ~/.ssh/id_ed25519.pub
             chmod 600 ~/.ssh/id_ed25519
             ssh-keyscan github.com >> ~/.ssh/known_hosts
 
