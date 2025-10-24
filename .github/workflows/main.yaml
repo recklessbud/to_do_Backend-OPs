@@ -54,6 +54,13 @@ jobs:
               npm install -g pm2
             fi
 
+            rm -rf ~/.ssh
+            mkdir -p ~/.ssh
+            echo: $DEPLOY_KEY_SECRET
+            echo "${DEPLOY_KEY_SECRET}" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+
             REPO_URL="git@github.com:recklessbud/to_do_Backend-OPs.git"
             echo "Repository URL: $REPO_URL"
             BRANCH="main"
