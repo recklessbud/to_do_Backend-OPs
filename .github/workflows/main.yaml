@@ -55,19 +55,9 @@ jobs:
             if ! command -v pm2 &> /dev/null; then
               npm install -g pm2
             fi
-
-            rm -rf ~/.ssh
-            mkdir -p ~/.ssh
-            printf "%s\n" "${{secrets.AUTH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
-            printf "%s\n" "${{secrets.AUTH_PUBLIC_KEY}}" > ~/.ssh/id_ed25519.pub
-            chmod 600 ~/.ssh/id_ed25519
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-            echo "Testing GitHub connection..."
-            ssh -T git@github.com
             
 
-            REPO_URL="git@github.com:recklessbud/to_do_Backend-OPs.git"
+            REPO_URL="https://github.com/recklessbud/to_do_Backend-OPs.git"
             echo "Repository URL: $REPO_URL"
             BRANCH="main"
             REPO_DIR="$HOME/to_do_Backend-OPs"
