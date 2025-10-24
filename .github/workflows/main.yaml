@@ -17,7 +17,8 @@ jobs:
       EC2_KEY: ${{secrets.EC2_SECRET_KEY}}
       PORT: ${{secrets.SERVER_PORT}}
       PAT_KEY: ${{secrets.PAT_KEY}}
-      DEPLOY_KEY_SECRET: ${{secrets.DEPLOY_KEY_SECRET}}
+      AUTH_PRIVATE_KEY: ${{secrets.AUTH_PRIVATE_KEY}}
+      AUTH_PUBLIC_KEY: ${{secrets.AUTH.PUBLIC_KEY}}
 
     steps:
       - uses: actions/checkout@v5
@@ -57,9 +58,14 @@ jobs:
 
             rm -rf ~/.ssh
             mkdir -p ~/.ssh
-            echo "${DEPLOY_KEY_SECRET}" > ~/.ssh/id_ed25519
+            echo "${AUTH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+            echo "${AUTH_PUBLIC_KEY}" > ~/.ssh/id_ed25519.pub
             chmod 600 ~/.ssh/id_ed25519
             ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+            echo "Testing GitHub connection..."
+            ssh -T git@github.com
+            
 
             REPO_URL="git@github.com:recklessbud/to_do_Backend-OPs.git"
             echo "Repository URL: $REPO_URL"
