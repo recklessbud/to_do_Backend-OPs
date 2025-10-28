@@ -24,7 +24,7 @@ jobs:
 
       - name: Connect to Ec2 instance
         run: |
-          echo "hey: ${EC2_KEY}" 
+          echo "hey: ${EC2_KEY}"  
           echo "$EC2_KEY" | tr -d '\r' > private_key.pem
           chmod 600 private_key.pem
           ssh -T -o StrictHostKeyChecking=no -i private_key.pem ${EC2_USER}@${EC2_HOST} << 'REMOTE'
